@@ -12,6 +12,9 @@
 }
 .publication-item-view a { padding-right: 0.5em; }
 
+.log-entry-view h1 { margin-bottom: 0.5em; }
+.log-entry-view { max-width: 50em; }
+
 .collect-form { max-width: 310px; }
 .collect-form input[type='text'], .collect-form textarea, .collect-form select { width: 95%; }
 .collect-form input[type='submit'] { float: right; }

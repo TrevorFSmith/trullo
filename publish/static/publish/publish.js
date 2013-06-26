@@ -71,6 +71,7 @@ publish.views.LogEntryView = Backbone.View.extend({
 	className: 'log-entry-view',
 	initialize: function(){
 		_.bindAll(this, 'render');
+		this.$el.addClass('log-entry-view');
 		this.model.bind('change', this.render);
 	},
 	render: function(){
