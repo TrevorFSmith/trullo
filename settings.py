@@ -4,6 +4,7 @@ PROJECT_ROOT = os.path.realpath(os.path.dirname(__file__))
 BACKUP_ROOT = os.path.join(PROJECT_ROOT, 'backups')
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media')
 TEMPLATE_DIRS = os.path.join(PROJECT_ROOT, 'templates')
+BACKUP_ROOT = os.path.join(PROJECT_ROOT, 'backups')
 
 MEDIA_URL = '/media/'
 STATIC_URL = '/static/'

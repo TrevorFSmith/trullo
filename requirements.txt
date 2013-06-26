@@ -1,5 +1,6 @@
 
 django>=1.4
+boto==2.8.0
 pytz
 docutils
 south
@@ -13,3 +14,4 @@ twitter
 gunicorn
 
 git+git://github.com/toastdriven/django-tastypie.git#egg=django-tastypie
+git+git://github.com/PaulUithol/backbone-tastypie.git#egg=backbone-tastypie

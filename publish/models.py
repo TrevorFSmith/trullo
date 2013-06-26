@@ -65,7 +65,7 @@ class Publication(models.Model):
 	title = models.CharField(max_length=2048, blank=False, null=False)
 	authors = models.TextField(blank=True, null=True)
 	venue = models.TextField(blank=True, null=True)
-	source_url = models.URLField(verify_exists=False, blank=True, null=True, max_length=2048, editable=True)
+	source_url = models.URLField(blank=True, null=True, max_length=2048, editable=True)
 	document = models.FileField(upload_to='publication', blank=True, null=True)
 	publication_date = models.DateTimeField(null=True, blank=True)
 
@@ -112,7 +112,7 @@ class Project(models.Model):
 class Comment(models.Model):
 	author = models.CharField(max_length=512, blank=False, null=False)
 	email = models.EmailField(blank=True, null=True)
-	url = models.URLField(verify_exists=False, blank=True, null=True, max_length=1024)
+	url = models.URLField(blank=True, null=True, max_length=1024)
 	ip = models.IPAddressField(blank=True, null=True)
 	created = models.DateTimeField(auto_now_add=True)
 	comment = models.TextField(blank=False, null=False)
@@ -168,7 +168,7 @@ class LogEntry(models.Model):
 	# for entries which are imported from remote streams, these fields store source info
 	source_guid = models.CharField(max_length=1024, blank=True, null=True, editable=False)
 	source_date = models.DateTimeField(blank=True, null=True, editable=False)
-	source_url = models.URLField(verify_exists=False, blank=True, null=True, max_length=1024, editable=False)
+	source_url = models.URLField(blank=True, null=True, max_length=1024, editable=False)
 
 	objects = LogEntryManager()
 	
@@ -196,7 +196,7 @@ def remove_linebreak_tags(value):
 class LogFeed(models.Model):
 	"""An RSS or Atom feed used to create log entries."""
 	log = models.ForeignKey(Log, blank=False, null=False)
-	feed = models.URLField(verify_exists=False, blank=False, null=False, max_length=2048)
+	feed = models.URLField(blank=False, null=False, max_length=2048)
 	title = models.CharField(max_length=512, blank=False, null=False)
 	checked = models.DateTimeField(blank=True, null=True)
 	failed = models.DateTimeField(blank=True, null=True)
@@ -235,7 +235,7 @@ class LinkManager(models.Manager):
 
 class Link(models.Model):
 	name = models.CharField(max_length=1024, blank=False)
-	url = models.URLField(verify_exists=False, blank=False, null=False, max_length=1024)
+	url = models.URLField(blank=False, null=False, max_length=1024)
 	description = models.TextField(blank=True)
 	created = models.DateTimeField(auto_now_add=True)
 	public = models.BooleanField(default=True, blank=False, null=False)

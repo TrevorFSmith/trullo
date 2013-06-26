@@ -1,21 +1,22 @@
 from django.conf import settings
 from django.contrib import admin
 from django.core.urlresolvers import reverse
-from django.conf.urls.defaults import patterns, include, url
+from django.conf.urls import patterns, include, url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.views.generic import RedirectView
 
 from trullo import API
 
 admin.autodiscover()
 
 urlpatterns = patterns('',
-	(r'^favicon\.ico$', 'django.views.generic.simple.redirect_to', {'url': '/static/favicon.gif'}),
+	(r'^favicon\.ico$', RedirectView.as_view(url='/static/favicon.gif')),
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
     (r'^admin/', include(admin.site.urls)),
 
 	(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name':'admin/login.html'}),
 	(r'^accounts/logout/$', 'django.contrib.auth.views.logout_then_login'),
-	(r'^accounts/profile/$', 'django.views.generic.simple.redirect_to', {'url': '/'}),
+	(r'^accounts/profile/$', RedirectView.as_view(url='/')),
 
 	(r'^api/', include(API.urls)),
 	(r'^publish/', include('publish.urls')),
