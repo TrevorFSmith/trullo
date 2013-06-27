@@ -19,7 +19,7 @@ body {
 	text-transform: uppercase;
 }
 #top-bar nav a {
-	padding-left: 0.2em;
+	padding-left: 1.2em;
 }
 #top-bar nav a.selected {
 	color: #FF7900;

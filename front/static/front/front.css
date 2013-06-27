@@ -1,2 +1,20 @@
 .aboutView h1 { margin-bottom: 0.4em; }
 .aboutView h1 ~ h1 { margin-top: 1.6em; }
+.front-index-stream-view li {
+	overflow: hidden;
+}
+.front-index-stream-view h3 {
+	font-size: 1em;
+	font-weight: normal;
+	line-height: 1.2em;
+}
+.front-index-stream-view p {
+	margin: 0.1em 0;
+	color: gray;
+	font-size: 0.9em;
+}
+
+.front-index-stream-view [class*="span"] {
+	margin-left: 0;
+	margin-right: 0.5em;
+}

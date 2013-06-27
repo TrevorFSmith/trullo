@@ -29,9 +29,9 @@
 				<a class="span4" id="brand" href="{% url 'front.views.index' %}">{{ site.name }}</a>
 				<nav class="span8">
 					<a href="{% url 'front.views.index' %}" class="index-nav">News</a>
+					<a href="{% url 'front.views.about' %}" class="about-nav">About Me</a>
 					<a href="{% url 'publish.views.projects' %}" class="projects-nav">Projects</a>
 					<a href="{% url 'publish.views.publications' %}" class="publications-nav">Publications</a>
-					<a href="{% url 'front.views.about' %}" class="about-nav">About</a>
 					<a href="{% url 'front.views.contact' %}" class="contact-nav">Contact</a>
 					{% if request.user.is_staff %}
 						<a href="{% url 'admin:index' %}">Admin</a>
