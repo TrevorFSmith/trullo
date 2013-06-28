@@ -42,13 +42,7 @@ def collect(request):
 def collect_form(request):
 	page_message = None
 	if request.method == 'GET':
-		collect_form = CollectForm()
-		if request.GET.has_key('url'): collect_form.initial['url'] = request.GET['url']
-		if request.GET.has_key('title'): collect_form.initial['title'] = request.GET['title']
-		if request.GET.has_key('excerpt') and len(request.GET['excerpt']) > 0:
-			collect_form.initial['excerpt'] = request.GET['excerpt']
-		elif request.GET.has_key('md'):
-			collect_form.initial['excerpt'] = request.GET['md']
+		collect_form = CollectForm(initial=request.GET)
 	else:
 		collect_form = CollectForm(request.POST)
 		if collect_form.is_valid():

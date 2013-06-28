@@ -17,6 +17,6 @@
 
 	<h1>Collect:</h1>
 
-	The favelet: <a href="javascript:function se(d) { return d.selection ? d.selection.createRange().text : d.getSelection()}; s = se(document); function md(d) { es = document.getElementsByName('Description'); for(var i=0; i < es.length; i++){ return es[i].content; } es = document.getElementsByName('description'); for(var i=0; i < es.length; i++){ return es[i].content; } return ''; }; d = md(document); url='http://{{ site.domain }}{% url 'publish.views.collect_form' %}?url='+encodeURI(location.href)+'&title='+encodeURI(document.title)+'&excerpt='+encodeURI(s)+'&md='+escape(d); window.open(url); return false;">collect</a>
+	The favelet: <a href="javascript:function se(d) { return d.selection ? d.selection.createRange().text : d.getSelection()}; s = se(document); function md(d) { es = document.getElementsByName('Description'); for(var i=0; i < es.length; i++){ return es[i].content; } es = document.getElementsByName('description'); for(var i=0; i < es.length; i++){ return es[i].content; } return ''; }; d = md(document); url='http://{{ site.domain }}{% url 'publish.views.collect_form' %}?log={{default_collection_log_id}}&url='+encodeURI(location.href)+'&title='+encodeURI(document.title)+'&excerpt='+encodeURI(s)+'&md='+escape(d); window.open(url); return false;">collect</a>
 
 {% endblock %}
