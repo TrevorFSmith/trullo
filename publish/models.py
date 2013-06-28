@@ -107,7 +107,7 @@ class Project(models.Model):
 
 	def __unicode__(self): return self.title
 	class Meta:
-		ordering = ['-started', '-ended']
+		ordering = ['-ended', '-started']
 
 class Comment(models.Model):
 	author = models.CharField(max_length=512, blank=False, null=False)

@@ -15,7 +15,6 @@ trullo.views.IndexView = Backbone.View.extend({
 		this.streamView.$el.addClass('front-index-stream-view');
 		this.streamView.$el.addClass('span6');
 		this.streamEntries.on('add', this.handleStreamEntriesChange);
-		this.streamEntries.on('remove', this.handleStreamEntriesChange);
 		this.streamEntries.on('reset', this.handleStreamEntriesChange);
 		this.streamEntries.fetch();
 	},

@@ -111,12 +111,15 @@ $(document).ready(function(){
 	}});
 });
 
-
 schema.parseJsonDate = function(jsonDate){
 	var dateString = jsonDate.split('T')[0];
 	var dateArray = dateString.split('-');
 	var date = new Date(dateArray[1] + ' ' + dateArray[2] + ' ' + dateArray[0]);
-	var timeArray = jsonDate.split('T')[1].split(':');
+	if(jsonDate.split('T').length > 1){
+		var timeArray = jsonDate.split('T')[1].split(':');
+	} else {
+		var timeArray = ['0', '0', '0'];
+	}
 	return new Date(date.getFullYear(), date.getMonth(), date.getDate(), parseInt(timeArray[0], 10), parseInt(timeArray[1], 10), parseInt(timeArray[2], 10));
 }
 

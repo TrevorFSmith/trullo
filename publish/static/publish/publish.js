@@ -138,7 +138,18 @@ publish.views.ProjectItemView = views.AbstractItemView.extend({
 		} else {
 			this.$el.append($('<h3 />').html(this.model.get('title')));
 		}
-		this.$el.append($('<p />').html(this.model.get('description')));
+		var description = $('<p />').html(this.model.get('description')); 
+		this.$el.append(description);
+
+		var metadata = $.el.div({'class':'metadata'});
+		this.$el.append(metadata);
+		var ended = this.model.get('ended');
+		if(ended){
+			var endDate = schema.parseJsonDate(ended);
+			metadata.append($.el.span($.timeago(endDate)));
+		} else {
+			metadata.append($.el.span('ongoing'));
+		}
 		return this;
 	},
 });

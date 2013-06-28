@@ -1,5 +1,5 @@
 .aboutView h1 { margin-bottom: 0.4em; }
-.aboutView h1 ~ h1 { margin-top: 1.6em; }
+.aboutView h1 ~ h1 { margin-top: 1em; }
 .front-index-stream-view li {
 	overflow: hidden;
 }
