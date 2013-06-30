@@ -77,3 +77,57 @@ trullo.views.ContactView = Backbone.View.extend({
 		return this;
 	},
 });
+
+trullo.views.JobItemView = Backbone.View.extend({
+	className:'job-item-view',
+	tagName:'li',
+	initialize: function(){
+		_.bindAll(this);
+		this.$el.append($.el.h4(this.model.get('title')));		
+		this.$el.append($.el.div({'class':'description'}, this.model.get('description')));
+		var startDate = schema.parseJsonDate(this.model.get('started'));
+		var dateRange = $.timeago(startDate) + ' - ';
+		var ended = this.model.get('ended');
+		if(ended){
+			var endDate = schema.parseJsonDate(ended);
+			dateRange += $.timeago(endDate);
+		} else {
+			dateRange += 'present';
+		}	
+		this.$el.append($.el.div({'class':'date-range'}, dateRange));
+	}
+});
+
+trullo.views.JobGroupView = Backbone.View.extend({
+	className:'job-group-view',
+	initialize: function(){
+		_.bindAll(this);
+		this.$el.append($.el.h3(this.model.get('title')));
+		this.jobItemViews = [];
+		this.jobItemsUL = $.el.ul();
+		this.$el.append(this.jobItemsUL);
+		var jobsData = this.model.get('jobs');
+		for(var i=0; i < jobsData.length; i++){
+			var jobItemView = new trullo.views.JobItemView({'model':new Backbone.Model(jobsData[i])});
+			this.jobItemViews[this.jobItemViews.length] = jobItemView;
+			this.jobItemsUL.append(jobItemView.el);
+		}
+	}
+});
+
+trullo.views.JobsView = Backbone.View.extend({
+	className: 'routeView job-view',
+	initialize: function(){
+		_.bindAll(this);
+		this.collection = new schema.JobgroupCollection();
+		this.collection.fetch({'success':this.initialRender});
+	},
+	initialRender: function(){
+		this.groupViews = [];
+		for(var i=0; i < this.collection.length; i++){
+			var groupView = new trullo.views.JobGroupView({'model':this.collection.at(i)});
+			this.groupViews[this.groupViews.length] = groupView;
+			this.$el.append(groupView.el);
+		}
+	}
+});

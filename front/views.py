@@ -30,6 +30,12 @@ def about(request): return render_to_response('front/about.html', { }, context_i
 
 def contact(request): return render_to_response('front/contact.html', { }, context_instance=RequestContext(request))
 
+def jobs(request):
+	context = {}
+	if hasattr(settings, 'JOBS_PAGE_CONTACT_INFO'):
+		context['contactInfo'] = settings.JOBS_PAGE_CONTACT_INFO
+	return render_to_response('front/jobs.html', context, context_instance=RequestContext(request))
+
 @login_required
 def link_popup(request):
 	if request.method == 'POST':

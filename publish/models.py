@@ -109,6 +109,24 @@ class Project(models.Model):
 	class Meta:
 		ordering = ['-ended', '-started']
 
+class Job(models.Model):
+	title = models.CharField(max_length=1024, blank=False, null=False)
+	description = models.TextField(blank=True, null=True)
+	started = models.DateField(blank=False, null=False)
+	ended = models.DateField(blank=True, null=True)
+	public = models.BooleanField(default=False, blank=False, null=False)
+	url = models.URLField(null=True, blank=True)
+	def __unicode__(self): return self.title
+	class Meta:
+		ordering = ['-started']
+
+class JobGroup(models.Model):
+	title = models.CharField(max_length=1024, blank=False, null=False)
+	jobs = models.ManyToManyField(Job, blank=True, null=True)
+	def __unicode__(self): return self.title
+	class Meta:
+		ordering = ['-jobs__started']
+
 class Comment(models.Model):
 	author = models.CharField(max_length=512, blank=False, null=False)
 	email = models.EmailField(blank=True, null=True)

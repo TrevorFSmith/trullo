@@ -5,6 +5,7 @@ urlpatterns = patterns('',
     (r'^$', 'front.views.index'),
     (r'^about/$', 'front.views.about'),
     (r'^contact/$', 'front.views.contact'),
+	(r'^job/$', 'front.views.jobs'),
 )
 
 # Copyright 2012 Trevor F. Smith (http://trevor.smith.name/) 

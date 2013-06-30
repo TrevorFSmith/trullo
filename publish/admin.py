@@ -16,6 +16,14 @@ class ProjectAdmin(StyledAdmin):
 	list_display = ('title', 'started', 'ended', 'public', 'portfolio')
 admin.site.register(Project, ProjectAdmin)
 
+class JobAdmin(StyledAdmin):
+	list_display = ('title', 'started', 'ended', 'public')
+admin.site.register(Job, JobAdmin)
+
+class JobGroupAdmin(StyledAdmin):
+	list_display = ('title',)
+admin.site.register(JobGroup, JobGroupAdmin)
+
 class IdeaAdmin(StyledAdmin):
 	list_display = ('title', 'created')
 	search_fields = ('title', 'description')

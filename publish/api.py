@@ -18,7 +18,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponse, Http404, HttpResponseServerError, HttpResponseRedirect, HttpResponsePermanentRedirect
 
 from publish.forms import IdeaForm
-from publish.models import Project, Idea, Publication, LogEntry, Log, Idea
+from publish.models import Project, Idea, Publication, LogEntry, Log, Idea, Job, JobGroup
 
 from trullo import API
 
@@ -85,7 +85,6 @@ class IdeaResource(ModelResource):
 		queryset = Idea.objects.all()
 		allowed_methods = ['get', 'post']
 		validation = FormValidation(form_class=IdeaForm)
-		#authentication = SessionAuthentication()
 		authorization = DjangoAuthorization()
 
 	def get_object_list(self, request):
@@ -93,6 +92,26 @@ class IdeaResource(ModelResource):
 		if request.user.is_authenticated(): return items
 		return items.filter(public=True)
 API.register(IdeaResource())
+
+class JobResource(ModelResource):
+	class Meta:
+		queryset = Job.objects.all()
+		allowed_methods = ['get']
+		authorization = DjangoAuthorization()
+
+	def get_object_list(self, request):
+		items = super(JobResource, self).get_object_list(request)
+		if request.user.is_authenticated(): return items
+		return items.filter(public=True)
+API.register(JobResource())
+
+class JobGroupResource(ModelResource):
+	jobs = fields.ToManyField(JobResource, 'jobs', null=True, full=True)
+	class Meta:
+		queryset = JobGroup.objects.all()
+		allowed_methods = ['get']
+		authorization = DjangoAuthorization()
+API.register(JobGroupResource())
 
 # Copyright 2012 Trevor F. Smith (http://trevor.smith.name/) 
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.

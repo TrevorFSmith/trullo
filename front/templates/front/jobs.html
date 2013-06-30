@@ -1,0 +1,59 @@
+{% extends "front/base.html" %}
+
+{% block head-extras-page %}
+<style>
+	body, #top-bar {
+		max-width: 60em;
+	}
+	#top-nav { display: none; }
+	.contact-info {
+	}
+	.job-group-view h3{
+		width: 13%;
+		display: inline-block;
+		vertical-align: bottom;
+		float: left;
+	}
+	.job-group-view ul {
+		list-style: none;
+		width: 85%;
+		display: inline-block;
+		border-left: solid 1px #444;
+		padding-left: 1em;
+		margin-left: 0em;
+		margin-bottom: 2em;
+	}
+	.job-group-view li {
+		margin-bottom: 2em;
+	}
+	.job-group-view li:last-child {
+		margin-bottom: 0;
+	}
+	.job-group-view li .date-range {
+		color: gray;
+		text-align: right;
+		font-size: 0.8em;
+	}
+</style>
+{% endblock %}
+
+{% block script-extras-page %}
+<script>
+	var contactInfoArray = [];
+	{% for info in contactInfo %}
+	contactInfoArray[contactInfoArray.length] = '{{info}}';
+	{% endfor %}
+
+	schema.tastyPieSchema.on('populated', function(){
+		window.pageView = new trullo.views.JobsView();
+		$('#page-view').append(window.pageView.el);
+		if(contactInfoArray){
+			var contactInfo = $.el.div({'class':'contact-info span8'});
+			for(var i=0; i < contactInfoArray.length; i++){
+				contactInfo.append($.el.div(contactInfoArray[i]));
+			}
+			$('#top-bar .row-fluid').append(contactInfo);
+		}
+	});
+</script>
+{% endblock %}

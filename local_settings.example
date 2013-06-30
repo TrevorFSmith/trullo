@@ -4,6 +4,10 @@ LANGUAGE_CODE = 'en-us'
 
 SITE_ID = 1
 
+DEFAULT_COLLECTION_LOG_ID = None # The pk of the Log to which link collection should go by default
+
+JOBS_PAGE_CONTACT_INFO = None # An array of info for the /job/ page like ['me@example.com', '(206) 555-1212']
+
 SECRET_KEY = 'SOME_JUNK_HERE'
 
 ADMINS = (('Your Name', 'something-or-other@exampleolio.com'),)
