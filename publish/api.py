@@ -18,7 +18,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponse, Http404, HttpResponseServerError, HttpResponseRedirect, HttpResponsePermanentRedirect
 
 from publish.forms import IdeaForm
-from publish.models import Project, Idea, Publication, LogEntry, Log, Idea, Job, JobGroup
+from publish.models import Project, Idea, Publication, LogEntry, Log, Idea, Job, JobGroup, Photo
 
 from trullo import API
 
@@ -36,8 +36,20 @@ class LogResource(ModelResource):
 		return objects.filter(public=True)
 API.register(LogResource())
 
+class PhotoResource(ModelResource):
+	web_image_url = fields.CharField(attribute='web_image_url', readonly=True)
+	class Meta:
+		queryset = Photo.objects.all()
+		include_absolute_url = True
+	def get_object_list(self, request):
+		objects = super(PhotoResource, self).get_object_list(request)
+		if request.user.is_authenticated(): return objects
+		return objects.filter(public=True)
+API.register(PhotoResource())
+
 class LogEntryResource(ModelResource):
 	log = fields.ForeignKey(LogResource, 'log')
+	photos = fields.ToManyField(PhotoResource, 'photos', null=True, full=True)
 	class Meta:
 		queryset = LogEntry.objects.all()
 		resource_name = 'log-entry'

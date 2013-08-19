@@ -11,6 +11,8 @@ urlpatterns = patterns('',
 	(r'^collect/$', 'publish.views.collect'),
 	(r'^collect-form/$', 'publish.views.collect_form'),
 
+	(r'^photo/(?P<id>[^/]+)/$', 'publish.views.photo'),
+
 	(r'^(?P<slug>[^/]+)/$', 'publish.views.log'),
 	(r'^(?P<slug>[^/]+)/archive/$', 'publish.views.log_archive'),
 	(r'^(?P<slug>[^/]+)/archive/(?P<year>[\d]+)/$', 'publish.views.log_year_archive'),

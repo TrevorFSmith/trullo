@@ -30,20 +30,33 @@ from django.utils.encoding import force_unicode, smart_unicode, smart_str
 
 class ThumbnailedModel(models.Model):
 	"""An abstract base class for models with an ImageField named "image" """
-	def thumb(self):
+
+	WEB_WIDTH = 1000
+	WEB_HEIGHT = 1000
+
+	def get_or_create_thumbnail(self, width=250, height=250):
 		if not self.image: return ""
-		import trullo.publish.templatetags.imagetags as imagetags
-		import trullo.imaging as imaging
+		import trullo.publish.templatetags.image as image
 		try:
-			file = settings.MEDIA_URL + self.image.path[len(settings.MEDIA_ROOT):]
-			filename, miniature_filename, miniature_dir, miniature_url = imagetags.determine_resized_image_paths(file, "admin_thumb")
+			original_file = settings.MEDIA_URL + self.image.path[len(settings.MEDIA_ROOT):]
+			filename, miniature_filename, miniature_dir, miniature_url = image.determine_resized_image_paths(original_file, "%sx%s" % (width, height))
 			if not os.path.exists(miniature_dir): os.makedirs(miniature_dir)
-			if not os.path.exists(miniature_filename): imaging.fit_crop(filename, 100, 100, miniature_filename)
-			return """<img src="%s" /></a>""" % miniature_url
+			if not os.path.exists(miniature_filename): image.fit_crop(filename, width, height, miniature_filename)
+			return miniature_url
 		except:
 			traceback.print_exc()
 			return None
+
+	@property
+	def web_image_url(self):
+		return self.get_or_create_thumbnail(ThumbnailedModel.WEB_WIDTH, ThumbnailedModel.WEB_HEIGHT)
+
+	def thumb(self, width=250, height=250):
+		thumb_url = self.get_or_create_thumbnail(width, height)
+		if not thumb_url: return ""
+		return """<img src="%s" /></a>""" % thumb_url
 	thumb.allow_tags = True
+
 	class Meta:
 		abstract = True
 
@@ -54,6 +67,7 @@ class Photo(ThumbnailedModel):
 	@models.permalink
 	def get_absolute_url(self):
 		return ('publish.views.photo', (), { 'id':self.id })
+
 	class Meta:
 		ordering = ['-created']
 	def __unicode__(self):

@@ -77,6 +77,16 @@ publish.views.LogEntryView = Backbone.View.extend({
 	render: function(){
 		this.$el.empty();
 		this.$el.append($.el.h1(this.model.get('subject')));
+		var photos = this.model.get('photos');
+		var thumbnailsList = $.el.ul({'class':'thumbnails'});
+		this.$el.append(thumbnailsList);
+		for(var i=0; i < photos.length; i++){
+			var span = thumbnailsList.append($.el.li({'class':'span4'}));
+			console.log(photos[i]);
+			var anchor = span.append($.el.a({'href':photos[i]['image'], 'target':'_new', 'class':'thumbnail'}));
+			anchor.append($.el.img({'src':photos[i]['web_image_url']}))
+		}
+
 		var content = this.model.get('content');
 		if(content){
 			var converter = new Markdown.Converter();

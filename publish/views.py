@@ -130,5 +130,11 @@ def log_entry(request, slug, pk):
 	
 	return render_to_response('publish/log_entry.html', { 'log_entry':entry, 'archive_years':LogEntry.objects.filter(log=entry.log).dates("issued", "year") }, context_instance=RequestContext(request))
 
+def photo(request, id):
+	photo = get_object_or_404(Photo, pk=id)
+	if not request.user.is_staff:
+		if not photo.public: raise Http404	
+	return render_to_response('publish/photo.html', { 'photo':photo }, context_instance=RequestContext(request))
+
 # Copyright 2012 Trevor F. Smith (http://trevor.smith.name/) 
 # Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
