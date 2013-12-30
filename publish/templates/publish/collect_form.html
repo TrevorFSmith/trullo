@@ -7,19 +7,37 @@
 
 {% block script-extras-page %}
 <script>
+   {% if log_entry %}
+      var mailtoURL = publish.createMailtoURL(null, "{{log_entry.subject|escapejs}}", "{{log_entry.content|striptags|escapejs}}: \n{{log_entry.source_url|escapejs}}");
+   {% else %}
+      var mailtoURL = null;
+   {% endif %}
+
    $(document).ready(function(){
       $('a.index-nav').addClass('selected');
+      if(mailtoURL){
+         $('#mailtoLink').attr('href', mailtoURL);
+      }
    });
 
-   schema.tastyPieSchema.on('populated', function(){
-   });
 </script>
 {% endblock %}
 
 {% block page-view %}
    {% if page_message %}
       <p id="page-message">{{ page_message|safe }}</p>
-   {% else %}
+   {% endif %}
+
+   {% if log_entry %}
+      <h2><a id="mailtoLink" href="">Mail it!</a></h2>
+
+      <h2>Cut and paste it:</h2>
+      <div>{{log_entry.subject}}</div>
+      <div style="wrap-style: none;">{{log_entry.content|striptags}}</>
+      <div>{{log_entry.source_url}}</div>
+   {% endif %}
+
+   {% if not page_message %}
       <form class="collect-form" action="." method="POST">
          {% for field in collect_form %}
             {% if field.label == 'Make public' %}public:{% endif %}

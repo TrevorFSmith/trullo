@@ -1,6 +1,18 @@
 var publish = publish || {};
 publish.views = publish.views || {};
 
+publish.createMailtoURL = function(toAddress, subject, body){
+	var result = 'mailto:';
+	if(toAddress) result += toAddress;
+	if(subject || body) result += '?';
+	if(subject) result += 'subject=' + escape(subject);
+	if(body){
+		if(subject) result += '&';
+		result += 'body=' + escape(body);
+	}
+	return result;
+}
+
 publish.views.LogItemView = views.AbstractItemView.extend({
 	className: 'log-item-view',
 	render: function(){

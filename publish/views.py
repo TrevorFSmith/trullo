@@ -41,6 +41,7 @@ def collect(request):
 @login_required
 def collect_form(request):
 	page_message = None
+	log_entry = None
 	if request.method == 'GET':
 		collect_form = CollectForm(initial=request.GET)
 	else:
@@ -55,7 +56,7 @@ def collect_form(request):
 			log_entry.issued = datetime.now()
 			log_entry.save()
 			page_message = 'The <a href="%s">log entry</a> was created.' % reverse('publish.views.log_entry', args=[], kwargs={'slug':log_entry.log.slug, 'pk':log_entry.id})
-	return render_to_response('publish/collect_form.html', { 'collect_form':collect_form, 'page_message':page_message }, context_instance=RequestContext(request))
+	return render_to_response('publish/collect_form.html', { 'collect_form':collect_form, 'page_message':page_message, 'log_entry':log_entry }, context_instance=RequestContext(request))
 
 def publications(request):
 	return render_to_response('publish/publications.html', {}, context_instance=RequestContext(request))
