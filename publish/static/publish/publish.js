@@ -13,7 +13,7 @@ publish.createMailtoURL = function(toAddress, subject, body){
 	return result;
 }
 
-publish.views.LogItemView = views.AbstractItemView.extend({
+publish.views.LogItemView = Backbone.View.extend({
 	className: 'log-item-view',
 	render: function(){
 		this.$el.empty();
@@ -23,7 +23,7 @@ publish.views.LogItemView = views.AbstractItemView.extend({
 	},
 });
 
-publish.views.LogCollectionView = views.AbstractCollectionView.extend({
+publish.views.LogCollectionView = trullo.views.AbstractCollectionView.extend({
 	className: 'log-collection-view',
 	itemView: publish.views.LogItemView,
 });
@@ -108,7 +108,7 @@ publish.views.LogEntryView = Backbone.View.extend({
 	}
 });
 
-publish.views.LogEntryItemView = views.AbstractItemView.extend({
+publish.views.LogEntryItemView = Backbone.View.extend({
 	className: 'log-entry-item-view',
 	render: function(){
 		var subject = $.el.h3();
@@ -128,12 +128,12 @@ publish.views.LogEntryItemView = views.AbstractItemView.extend({
 	},
 });
 
-publish.views.LogEntryCollectionView = views.AbstractCollectionView.extend({
+publish.views.LogEntryCollectionView = trullo.views.AbstractCollectionView.extend({
 	className: 'log-entry-collection-view',
 	itemView: publish.views.LogEntryItemView,
 });
 
-publish.views.IdeaItemView = views.AbstractItemView.extend({
+publish.views.IdeaItemView = Backbone.View.extend({
 	className: 'idea-item-view',
 	render: function(){
 		this.$el.empty();
@@ -144,12 +144,12 @@ publish.views.IdeaItemView = views.AbstractItemView.extend({
 	},
 });
 
-publish.views.IdeaCollectionView = views.AbstractCollectionView.extend({
+publish.views.IdeaCollectionView = trullo.views.AbstractCollectionView.extend({
 	className: 'idea-collection-view',
 	itemView: publish.views.IdeaItemView,
 });
 
-publish.views.ProjectItemView = views.AbstractItemView.extend({
+publish.views.ProjectItemView = Backbone.View.extend({
 	className: 'project-item-view',
 	render: function(){
 		if(this.model.get('url')){
@@ -176,7 +176,7 @@ publish.views.ProjectItemView = views.AbstractItemView.extend({
 	},
 });
 
-publish.views.ProjectCollectionView = views.AbstractCollectionView.extend({
+publish.views.ProjectCollectionView = trullo.views.AbstractCollectionView.extend({
 	className: 'project-collection-view',
 	itemView: publish.views.ProjectItemView,
 });
@@ -201,7 +201,7 @@ publish.views.ProjectsView = Backbone.View.extend({
 	},
 });
 
-publish.views.PublicationItemView = views.AbstractItemView.extend({
+publish.views.PublicationItemView = Backbone.View.extend({
 	className: 'publication-item-view',
 	render: function(){
 		this.$el.append($('<h3 />').html('"' + this.model.get('title') + '"'));
@@ -218,7 +218,7 @@ publish.views.PublicationItemView = views.AbstractItemView.extend({
 	},
 });
 
-publish.views.PublicationCollectionView = views.AbstractCollectionView.extend({
+publish.views.PublicationCollectionView = trullo.views.AbstractCollectionView.extend({
 	className: 'publication-collection-view',
 	itemView: publish.views.PublicationItemView,
 });

@@ -1,0 +1,7 @@
+{% load mdown %}
+<div class="log-entry-snippet">
+	<h2><a href="{{ log_entry.get_absolute_url }}">{{ log_entry.subject }}</a></h2>
+	<div class="rendered-markdown">
+		{{ log_entry.content|mdown|truncatewords_html:45 }}
+	</div>
+</div>

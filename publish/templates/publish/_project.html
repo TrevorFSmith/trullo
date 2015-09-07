@@ -1,0 +1,21 @@
+<div class="project">
+	<h2>
+		{% if project.url %}
+			<a href="{{ project.url }}">
+		{% endif %}
+		{{ project.title|safe }}
+		{% if project.url %}
+			</a>
+		{% endif %}
+	</h2>
+	
+	<div class="description">{{ project.description|safe }}</div>
+
+	<div class="date-range">
+		{% if project.ended %}
+			{{ project.ended|timesince }} ago
+		{% else %}
+			ongoing
+		{% endif %}
+	</div>
+</div>

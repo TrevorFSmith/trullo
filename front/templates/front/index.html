@@ -1,14 +1,59 @@
 {% extends "front/base.html" %}
 
-{% block script-extras-page %}
-<script>
-	$(document).ready(function(){
-		$('a.index-nav').addClass('selected');
-	});
+{% block head-extras-page %}
+	<style>
+		#page-view .container h1 {
+			margin-bottom: 25px;
+		}
 
-	schema.tastyPieSchema.on('populated', function(){
-		window.pageView = new trullo.views.IndexView({el:$('#page-view')});
-		window.pageView.render();
-	});
-</script>
+		#links-row {
+			padding: 0 15px;
+		}
+		#links-row .col-xs-4 {
+			padding: 0 15px 15px 0;
+		}
+
+		#posts-anchor {
+			display: block;
+			text-align: center;
+			margin-bottom: 15px;
+			outline: none;
+		}
+	</style>
+{% endblock %}
+
+{% block script-extras-page %}
+	<script>
+		$(document).ready(function(){
+			$('#index-nav').addClass('active');
+		});
+	</script>
+{% endblock %}
+
+{% block page-view %}
+	<div id="top-page-view-container" class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-6">
+				<h1>Posts</h1>
+				<div class="log-entry-snippet-list">
+					{% for log_entry in recent_log_entries|slice:":4" %}
+						{% include "publish/_log_entry_snippet.html" %}
+					{% endfor %}
+				</div>
+				<a id="posts-anchor" href="{% url 'publish.views.posts' %}">More posts</a>
+			</div>
+
+			<div class="col-xs-12 col-sm-6">
+				<h1>Links</h1>
+				<div id="links-row" class="row">
+				{% for log_entry in recent_log_entry_links|slice:":20" %}
+					<div class="col-xs-4">	
+						{% include "publish/_log_entry_link.html" %}
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+
+
 {% endblock %}

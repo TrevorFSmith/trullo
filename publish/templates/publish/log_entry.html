@@ -1,20 +1,56 @@
 {% extends "publish/base.html" %}
+{% load mdown %}
 
 {% block title %}{{log_entry.subject|safe}} | {% endblock %}
 
-{% block script-extras-page %}
-<script>
-	$(document).ready(function(){
-		$('a.index-nav').addClass('selected');
-	});
+{% block opengraph %}
+	<meta property="og:url" content="https://{{ site.domain }}{{ log_entry.get_absolute_url }}"/>
+	<meta property="og:title" content="{{log_entry.subject}}"/>
+	<meta property="og:site_name" content="{{ site.name }}"/>
+	<meta property="og:description" content="{{ log_entry.content|mdown|striptags|escape|truncatewords:20 }}"/>
+{% endblock%}
 
-	schema.tastyPieSchema.on('populated', function(){
-		window.model = new schema.LogEntry({id:{{log_entry.id}}});
-		window.pageView = new publish.views.LogEntryView({
-			el:$('#page-view'), 
-			model:window.model,
+{% block head-extras-page %}
+	<style>
+		.log-entry {
+			margin-bottom: 20px;
+		}
+		#posts-anchor {
+			display: block;
+			text-align: center;
+			margin-bottom: 15px;
+			outline: none;
+		}
+	</style>
+{% endblock %}
+
+{% block script-extras-page %}
+	<script>
+		$(document).ready(function(){
+			$('#posts-nav').addClass('active');
 		});
-		model.fetch();
-	});
-</script>
+	</script>
+{% endblock %}
+
+{% block page-view %}
+	<div id="top-page-view-container" class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-9 log-entry">
+				<h1>{{ log_entry.subject|safe }}</h1>
+				<div class="log-entry">
+					{{ log_entry.content|mdown }}
+				</div>
+				<a id="posts-anchor" href="{% url 'publish.views.posts' %}">More posts</a>
+			</div>
+
+			<div class="col-xs-12 col-sm-3">
+				<h2>Recent posts</h2>
+				<ul class="log-entry-subject-list">
+					{% for log_entry in recent_log_entries|slice:":10" %}
+						<li>{% include 'publish/_log_entry_snippet.html' %}</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+	</div>
 {% endblock %}

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
 {% block script-extras-app %}
-	<link rel="stylesheet" href="{{STATIC_URL}}publish/publish.css">
-	<script src="{{STATIC_URL}}publish/publish.js"></script>
+	<script src="{% static 'publish/publish.js' %}"></script>
 {% endblock %}

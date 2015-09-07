@@ -3,22 +3,42 @@
 {% block title %}Contact | {% endblock %}
 
 {% block head-extras-page %}
-<style>
-.contactLink:after { content: "\a"; white-space: pre; }
-.vcard .n, .vcard .fn { display: none; }
-.vcard .adr { margin: 1em 0; }
-</style>
+	<style>
+		.adr {
+			white-space: pre;
+		}
+	</style>
 {% endblock %}
 
 {% block script-extras-page %}
-<script>
-	$(document).ready(function(){
-		$('a.contact-nav').addClass('selected');
-	});
+	<script>
+		$(document).ready(function(){
+			$('#contact-nav').addClass('active');
+		});
+	</script>
+{% endblock %}
 
-	schema.tastyPieSchema.on('populated', function(){
-		window.pageView = new trullo.views.ContactView({el:$('#page-view')});
-		window.pageView.render();
-	});
-</script>
+{% block page-view %}
+	<div id="top-page-view-container" class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-6">
+				<h3>Links:</h3>
+				<table class="tuple-table">
+					{% for link in contact_info.links %}
+						<tr>
+							<th>{{ link.0 }}</th>
+							<td><a href="{{ link.2 }}">{{ link.1 }}</a></td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+
+			<div class="col-xs-12 col-sm-6">
+				{% if contact_info.address %}
+					<h3>Address:</h3>
+					<div class="adr">{{ contact_info.address }}</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
 {% endblock %}

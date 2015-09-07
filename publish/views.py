@@ -1,6 +1,5 @@
 import time
 import rfc822
-import tweepy
 import urllib
 import calendar
 import traceback
@@ -20,7 +19,6 @@ from django.template import Context, loader
 from django.utils.encoding import smart_str
 from django.core.urlresolvers import reverse
 from django.contrib.sites.models import Site
-from django.contrib.comments.models import Comment
 from django.template.loader import render_to_string
 from django.contrib.auth.decorators import login_required
 import django.contrib.contenttypes.models as content_type_models
@@ -58,8 +56,17 @@ def collect_form(request):
 			page_message = 'The <a href="%s">log entry</a> was created.' % reverse('publish.views.log_entry', args=[], kwargs={'slug':log_entry.log.slug, 'pk':log_entry.id})
 	return render_to_response('publish/collect_form.html', { 'collect_form':collect_form, 'page_message':page_message, 'log_entry':log_entry }, context_instance=RequestContext(request))
 
+def posts(request):
+	context = {
+		'recent_log_entries': LogEntry.objects.public_entries(originals=True),
+	}
+	return render_to_response('publish/posts.html', context, context_instance=RequestContext(request))
+
 def publications(request):
-	return render_to_response('publish/publications.html', {}, context_instance=RequestContext(request))
+	context = {
+		'publications': Publication.objects.all()
+	}
+	return render_to_response('publish/publications.html', context, context_instance=RequestContext(request))
 
 def merge(request):
 	return render_to_response('publish/merge.html', { }, context_instance=RequestContext(request))
@@ -68,13 +75,17 @@ def ideas(request):
 	return render_to_response('publish/ideas.html', { 'ideas':Idea.objects.all() }, context_instance=RequestContext(request))
 		
 def projects(request):
-	return render_to_response('publish/projects.html', { 'projects':Project.objects.all() }, context_instance=RequestContext(request))
+	context = {
+		'portfolio_projects': Project.objects.filter(public=True, portfolio=True),
+		'nonporfolio_projects': Project.objects.filter(public=True, portfolio=False)
+	}
+	return render_to_response('publish/projects.html', context, context_instance=RequestContext(request))
 	
 def log(request, slug):
 	log = get_object_or_404(Log, slug=slug)
 	if not request.user.is_staff and not log.public:
 		return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
-	return render_to_response('publish/log.html', { 'log':log, 'archive_years':LogEntry.objects.filter(log=log).dates("issued", "year") }, context_instance=RequestContext(request))
+	return render_to_response('publish/log.html', { 'log':log }, context_instance=RequestContext(request))
 
 def log_archive(request, slug):
 	return log_year_archive(request, slug, datetime.now().year)
@@ -83,7 +94,7 @@ def log_year_archive(request, slug, year):
 	log = get_object_or_404(Log, slug=slug)
 	if not request.user.is_staff and not log.public:
 		return HttpResponseRedirect('/accounts/login/?next=%s' % request.path)
-	return render_to_response('publish/log_archive.html', { 'log':log, 'entries':LogEntry.objects.filter(log=log, issued__year=year),'archive_years':LogEntry.objects.filter(log=log).dates("issued", "year") }, context_instance=RequestContext(request))
+	return render_to_response('publish/log_archive.html', { 'log':log, 'entries':LogEntry.objects.filter(log=log, issued__year=year) }, context_instance=RequestContext(request))
 
 def log_feed(request, slug):
 	log = get_object_or_404(Log, slug=slug)
@@ -128,8 +139,12 @@ def log_entry(request, slug, pk):
 	if not request.user.is_staff:
 		if not entry.publish: raise Http404
 		if not entry.log.public: raise Http404
+	context = {
+		'log_entry': entry,
+		'recent_log_entries': LogEntry.objects.public_entries(originals=True).exclude(pk=entry.id),
+	}
 	
-	return render_to_response('publish/log_entry.html', { 'log_entry':entry, 'archive_years':LogEntry.objects.filter(log=entry.log).dates("issued", "year") }, context_instance=RequestContext(request))
+	return render_to_response('publish/log_entry.html', context, context_instance=RequestContext(request))
 
 def photo(request, id):
 	photo = get_object_or_404(Photo, pk=id)

@@ -3,14 +3,31 @@
 {% block title %}Projects | {% endblock %}
 
 {% block script-extras-page %}
-<script>
-	$(document).ready(function(){
-		$('a.projects-nav').addClass('selected');
-	});
+	<script>
+		$(document).ready(function(){
+			$('#projects-nav').addClass('active');
+		});
+	</script>
+{% endblock %}
 
-	schema.tastyPieSchema.on('populated', function(){
-		window.pageView = new publish.views.ProjectsView({el:$('#page-view')});
-		window.pageView.render();
-	});
-</script>
+{% block page-view %}
+	<div id="top-page-view-container" class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-6">
+				<div class="project-list">
+					{% for project in portfolio_projects %}
+						{% include 'publish/_project.html' %}
+					{% endfor %}
+				</div>
+			</div>
+
+			<div class="col-xs-12 col-sm-6">
+				<div class="project-list">
+					{% for project in nonporfolio_projects %}
+						{% include 'publish/_project.html' %}
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}
