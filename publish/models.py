@@ -1,15 +1,14 @@
 import os
 import re
 import time
-import Image
-import urllib
 import random
 import logging
 import calendar
+import markdown
 import traceback
-import feedparser
 import unicodedata
 from re import sub
+from urlparse import urlparse
 from datetime import datetime, timedelta, date
 
 from django.db import models
@@ -20,13 +19,10 @@ from django.dispatch import dispatcher
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
-from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
 from django.utils.html import strip_tags,  linebreaks, urlize
-from django.contrib.markup.templatetags.markup import markdown
 from django.utils.encoding import force_unicode, smart_unicode, smart_str
-
-#from publish.templatetags.texttags import sanitize_html
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 
 class ThumbnailedModel(models.Model):
 	"""An abstract base class for models with an ImageField named "image" """
@@ -115,7 +111,7 @@ class Project(models.Model):
 	ended = models.DateField(blank=True, null=True)
 	public = models.BooleanField(default=False, blank=False, null=False)
 	portfolio = models.BooleanField(default=False, blank=False, null=False)
-	photos = models.ManyToManyField(Photo, blank=True, null=True)
+	photos = models.ManyToManyField(Photo, blank=True)
 	url = models.URLField(null=True, blank=True)
 	logo = models.ForeignKey(Photo, blank=True, null=True, related_name='logos')
 
@@ -136,7 +132,7 @@ class Job(models.Model):
 
 class JobGroup(models.Model):
 	title = models.CharField(max_length=1024, blank=False, null=False)
-	jobs = models.ManyToManyField(Job, blank=True, null=True)
+	jobs = models.ManyToManyField(Job, blank=True)
 	def __unicode__(self): return self.title
 	class Meta:
 		ordering = ['-jobs__started']
@@ -152,7 +148,7 @@ class Comment(models.Model):
 	
 	content_type = models.ForeignKey(ContentType)
 	object_id = models.PositiveIntegerField()
-	content_object = generic.GenericForeignKey('content_type', 'object_id')
+	content_object = GenericForeignKey('content_type', 'object_id')
 	def __unicode__(self):
 		return self.author
 	class Meta:
@@ -182,8 +178,13 @@ class LogEntryPhoto(models.Model):
 	weight = models.IntegerField(default=0, blank=False, null=False)
 
 class LogEntryManager(models.Manager):
-	def public_entries(self):
-		return self.filter(publish=True, log__public=True)
+	def public_entries(self, originals=True):
+		q = self.filter(publish=True, log__public=True)
+		if originals:
+			q = q.filter(source_url=None)
+		else:
+			q = q.filter(source_url__isnull=False)
+		return q
 
 class LogEntry(models.Model):
 	log = models.ForeignKey(Log, blank=False, null=False)
@@ -193,9 +194,9 @@ class LogEntry(models.Model):
 	modified = models.DateTimeField(auto_now=True, blank=False, null=False)
 	created = models.DateTimeField(auto_now_add=True)
 	publish = models.BooleanField(blank=False, null=False, default=False)
-	comments = generic.GenericRelation(Comment)
+	comments = GenericRelation(Comment)
 	comments_open = models.BooleanField(blank=False, null=False, default=False)
-	photos = models.ManyToManyField(Photo, blank=True, null=True, through='LogEntryPhoto')
+	photos = models.ManyToManyField(Photo, blank=True, through='LogEntryPhoto')
 
 	# for entries which are imported from remote streams, these fields store source info
 	source_guid = models.CharField(max_length=1024, blank=True, null=True, editable=False)
@@ -204,6 +205,14 @@ class LogEntry(models.Model):
 
 	objects = LogEntryManager()
 	
+	def source_hostname(self):
+		'''If source_url is set, returns the hostname. Otherwise, None.'''
+		if not self.source_url: return None
+		hostname = urlparse(self.source_url)[1]
+		if hostname.startswith('www.'):
+			hostname = hostname[4:]
+		return hostname
+
 	def summary(self): # returns a dictionary: {title, content, date, url} for use in mixed lists
 		return {'title':self.subject, 'content':self.content, 'date':self.issued, 'url':self.get_absolute_url(), 'type':'logentry' }
 	def __unicode__(self):
@@ -232,32 +241,11 @@ class LogFeed(models.Model):
 	title = models.CharField(max_length=512, blank=False, null=False)
 	checked = models.DateTimeField(blank=True, null=True)
 	failed = models.DateTimeField(blank=True, null=True)
+
 	def check_feed(self):
 		"""Fetch the feed and create log entries for each item."""
-		logging.info("checking log feed: %s" % self.feed)
-		doc = feedparser.parse(self.feed)
-		for entry in doc.entries:
-			log_entry = LogEntry(log=self.log)
-			log_entry.subject = convert_to_ascii(sanitize_html(entry.title))
+		logging.info("NOT IMPLEMENTED: %s" % self.feed)
 
-			if entry.has_key('content'): log_entry.content = entry.content[0].value
-			elif entry.has_key('summary'): log_entry.content = entry.summary
-			elif entry.has_key('subtitle'): log_entry.content = entry.subtitle
-			if log_entry.content: log_entry.content = convert_to_ascii(sanitize_html(log_entry.content))
-
-			log_entry.source_guid = entry.id
-			log_entry.source_url = entry.link
-
-			log_entry.issued = datetime.now()
-			if entry.has_key('published_parsed'): log_entry.source_date = datetime(*entry.published_parsed[:6])
-			if log_entry.source_date: log_entry.issued = log_entry.source_date
-			
-			# check that we haven't already recorded this entry
-			if LogEntry.objects.filter(source_guid=log_entry.source_guid).count() > 0: continue
-			if LogEntry.objects.filter(source_url=log_entry.source_url).count() > 0: continue
-			log_entry.publish = True
-			log_entry.save()
-		logging.info("completed log feed check")
 	def __unicode__(self):
 		return self.title
 

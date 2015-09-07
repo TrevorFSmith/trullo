@@ -1,22 +1,16 @@
 {% extends "front/base.html" %}
 
-{% block title %}About | {% endblock %}
+{% block title %}About Me | {% endblock %}
 
 {% block head-extras-page %}
-<style>
-.inline-block { width: 40%; margin-right: 5%; }
-</style>
+	<style>
+	</style>
 {% endblock %}
 
 {% block script-extras-page %}
-<script>
-	$(document).ready(function(){
-		$('a.about-nav').addClass('selected');
-	});
-
-	schema.tastyPieSchema.on('populated', function(){
-		window.pageView = new trullo.views.AboutView({el:$('#page-view')});
-		window.pageView.render();
-	});
-</script>
+	<script>
+		$(document).ready(function(){
+			$('#about-nav').addClass('active');
+		});
+	</script>
 {% endblock %}

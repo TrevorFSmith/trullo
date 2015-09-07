@@ -3,6 +3,7 @@ from django.conf.urls import patterns
 urlpatterns = patterns('',
 	(r'^$', 'publish.views.index'),
 	(r'^idea/$', 'publish.views.ideas'),
+	(r'^post/$', 'publish.views.posts'),
 	(r'^publication/$', 'publish.views.publications'),
 	(r'^project/$', 'publish.views.projects'),
 

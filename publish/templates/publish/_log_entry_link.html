@@ -1,0 +1,5 @@
+{% load mdown %}
+<div class="log-entry-link">
+	<h3><a href="{{ log_entry.get_absolute_url }}">{{ log_entry.subject }}</a></h3>
+	<div class="hostname">{{ log_entry.source_hostname }}</div>
+</div>

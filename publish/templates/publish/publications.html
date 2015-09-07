@@ -3,14 +3,23 @@
 {% block title %}Publications | {% endblock %}
 
 {% block script-extras-page %}
-<script>
-	$(document).ready(function(){
-		$('a.publications-nav').addClass('selected');
-	});
+	<script>
+		$(document).ready(function(){
+			$('#publications-nav').addClass('active');
+		});
+	</script>
+{% endblock %}
 
-	schema.tastyPieSchema.on('populated', function(){
-		window.pageView = new publish.views.PublicationsView({el:$('#page-view')});
-		window.pageView.render();
-	});
-</script>
+{% block page-view %}
+	<div id="top-page-view-container" class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-9">
+				<div class="publication-list">
+					{% for publication in publications %}
+						{% include 'publish/_publication.html' %}
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}

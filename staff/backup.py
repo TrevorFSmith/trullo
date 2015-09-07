@@ -89,7 +89,7 @@ class BackupManager(object):
 		if db_password: os.environ['PGPASSWORD'] = db_password
 
 		# now delete and recreate the database
-		command = 'echo "drop database %s; create database %s;" | psql -U %s postgres' % (db_name, db_name, db_user)
+		command = 'echo "drop database %s; create database %s;" | psql -U %s' % (db_name, db_name, db_user)
 		if not self.call_system(command): raise BackupError('Aborting restoration.')
 
 		# gunzip the db dump
@@ -101,7 +101,7 @@ class BackupManager(object):
 		if not self.call_system(command): raise BackupError('Aborting restoration.')
 
 		# restore permissions
-		command = 'echo "grant all on all tables in schema public to %s; grant all on all sequences in schema public to %s; grant all on all functions in schema public to %s;" | psql -U %s postgres' % (db_user, db_user, db_user, db_user)
+		command = 'echo "grant all on all tables in schema public to %s; grant all on all sequences in schema public to %s; grant all on all functions in schema public to %s;" | psql -U %s' % (db_user, db_user, db_user, db_user)
 		if not self.call_system(command): raise BackupError('Aborting restoration.')
 
 	def check_dirs(self):

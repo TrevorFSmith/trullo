@@ -1,0 +1,13 @@
+<div class="publication">
+	<h2>{{ publication.title }}</h2>
+	<div class="authors">{{ publication.authors }}</div>
+	<div class="venue-and-date">{{ publication.venue }}. {{ publication.publication_date.date }}</div>
+	<div class="links">
+		{% if publication.source_url %}
+			<a href="{{ publication.source_url }}">source</a>
+		{% endif %}
+		{% if publication.document %}
+			<a href="{{ publication.document.url }}">download</a>
+		{% endif %}
+	</div>
+</div>

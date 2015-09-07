@@ -1,0 +1,25 @@
+{% extends "publish/base.html" %}
+
+{% block title %}Posts | {% endblock %}
+
+{% block script-extras-page %}
+	<script>
+		$(document).ready(function(){
+			$('#posts-nav').addClass('active');
+		});
+	</script>
+{% endblock %}
+
+{% block page-view %}
+	<div id="top-page-view-container" class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-9">
+				<div class="log-entry-snippet-list">
+					{% for log_entry in recent_log_entries %}
+						{% include "publish/_log_entry_snippet.html" %}
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

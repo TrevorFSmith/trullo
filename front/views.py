@@ -13,7 +13,6 @@ from django.template import RequestContext
 from django.contrib.auth.models import User
 from django.template import Context, loader
 from django.contrib.sites.models import Site
-from django.contrib.comments.models import Comment
 from django.template.loader import render_to_string
 from django.contrib.auth.decorators import login_required
 import django.contrib.contenttypes.models as content_type_models
@@ -24,11 +23,18 @@ from django.http import HttpResponse, Http404, HttpResponseServerError, HttpResp
 from publish.models import Project, LogEntry, Link
 from publish.forms import LinkForm
 
-def index(request): return render_to_response('front/index.html', { }, context_instance=RequestContext(request))
+def index(request):
+	context = {
+		'recent_log_entries': LogEntry.objects.public_entries(originals=True),
+		'recent_log_entry_links': LogEntry.objects.public_entries(originals=False),
+	}
+	return render_to_response('front/index.html', context, context_instance=RequestContext(request))
 
-def about(request): return render_to_response('front/about.html', { }, context_instance=RequestContext(request))
-
-def contact(request): return render_to_response('front/contact.html', { }, context_instance=RequestContext(request))
+def contact(request):
+	context = {
+		'contact_info': settings.CONTACT_INFO
+	}
+	return render_to_response('front/contact.html', context, context_instance=RequestContext(request))
 
 def jobs(request):
 	context = {}

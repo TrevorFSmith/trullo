@@ -6,11 +6,17 @@ Trullo is a Django web application written in Python.
 
 	git clone git://github.com/TrevorFSmith/trullo.git
 	cd trullo
+	npm install
 	pip install -r requirements.txt
-	cp local_settings.example local_settings.py
-	# Edit local_settings.py to reflect your local environment
+	cp trullo/local_settings.example trullo/local_settings.py
+
+Then, edit local_settings.py to reflect your local environment.
 
 # Running
+
+To run Grunt to compile the front-end:
+
+	grunt
 
 To run the Django dev server on your [local machine](http://127.0.0.1:8000/):
 

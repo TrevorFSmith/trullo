@@ -1,6 +1,7 @@
 *.pyc
 *.swp
 pip-log.txt
+node_modules
 backups
-local_settings.py
-media/*
+trullo/local_settings.py
+trullo/media/*
