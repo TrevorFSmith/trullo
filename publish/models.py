@@ -78,6 +78,7 @@ class Publication(models.Model):
 	source_url = models.URLField(blank=True, null=True, max_length=2048, editable=True)
 	document = models.FileField(upload_to='publication', blank=True, null=True)
 	publication_date = models.DateTimeField(null=True, blank=True)
+	image = models.ImageField(upload_to='publication_image', blank=True)
 
 	def __unicode__(self): return self.title
 

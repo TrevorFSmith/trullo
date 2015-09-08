@@ -1,8 +1,8 @@
 import os
 import re
 import traceback
-import Image
-from django.template import Library
+from PIL import Image
+
 from django import template
 from django.utils.html import linebreaks
 from django.conf import settings
@@ -65,6 +65,7 @@ def fit_image(file, size_param="300x300"):
 	"""Fit an image into the dimensions with no change in height/width ratio"""
 	try:
 		if not file: return None
+		print 'file', file
 		width_param, height_param = size_param.split('x')
 		width = int(width_param)
 		height = int(height_param)
@@ -122,8 +123,8 @@ def determine_resized_image_paths(file, size_mark):
 	else:
 		basename, format = file.rsplit('.', 1)
 	miniature = basename + "_" + size_mark + '.' + format
-	miniature_nomedia = miniature[len(settings.MEDIA_URL) + 1:]
-	file_nomedia = file[len(settings.MEDIA_URL) + 1:]
+	miniature_nomedia = miniature[len(settings.MEDIA_URL):]
+	file_nomedia = file[len(settings.MEDIA_URL):]
 	filename = os.path.join(settings.MEDIA_ROOT, file_nomedia)
 	resized_image_dir = os.path.join(settings.MEDIA_ROOT, RESIZED_IMAGE_DIR)
 	miniature_filename = os.path.join(resized_image_dir, miniature_nomedia)

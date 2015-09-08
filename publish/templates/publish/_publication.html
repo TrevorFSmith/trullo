@@ -1,4 +1,21 @@
+{% load image %}
 <div class="publication">
+
+	{% if publication.image %}
+		<div class="publication-image">
+			{% if publication.source_url %}
+				<a href="{{ publication.source_url }}">
+			{% elif publication.document %}
+				<a href="{{ publication.document.url }}">
+			{% endif %}
+
+			<img src='{{ publication.image.url|fit_image:"200x200" }}' />
+
+			{% if publication.source_url or publication.document %}
+				</a>
+			{% endif %}
+		</div>
+	{% endif %}
 	<h2>{{ publication.title }}</h2>
 	<div class="authors">{{ publication.authors }}</div>
 	<div class="venue-and-date">{{ publication.venue }}. {{ publication.publication_date.date }}</div>
