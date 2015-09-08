@@ -2,6 +2,10 @@
 
 {% block head-extras-page %}
 	<style>
+		#top-page-view-container {
+			margin-top: 35px;
+		}
+		
 		#page-view .container h1 {
 			margin-bottom: 25px;
 		}
@@ -19,6 +23,16 @@
 			margin-bottom: 15px;
 			outline: none;
 		}
+		.jumbotron h1 {
+			text-align: center;
+		}
+
+		#profile-image-col {
+			text-align: center;
+		}
+		#profile-image-col .profile-image {
+			margin-top: 6px;
+		}
 	</style>
 {% endblock %}
 
@@ -32,6 +46,24 @@
 
 {% block page-view %}
 	<div id="top-page-view-container" class="container">
+		<div class="jumbotron">
+			<h1>
+				Hello{% if owner and owner.first_name %}, I'm {{ owner.first_name }}.{% endif %}
+			</h1>
+			<p class="lead">
+				<div class="row">
+					<div id="profile-image-col" class="col-xs-12 col-sm-3">
+						<img class="profile-image" src="{{ owner.profile.image.url }}" />
+					</div>
+					<div class="col-xs-12 col-sm-9">
+						{{ owner.profile.about|safe }}
+					</div>
+				</div>
+			</p>
+		</div>
+	</div>
+
+	<div class="container">
 		<div class="row">
 			<div class="col-xs-12 col-sm-6">
 				<h1>Posts</h1>

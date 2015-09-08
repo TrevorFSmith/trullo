@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 
 def site(request):
@@ -9,12 +10,18 @@ def site(request):
 	if hasattr(settings, 'DEFAULT_COLLECTION_LOG_ID'):
 		default_collection_log_id = settings.DEFAULT_COLLECTION_LOG_ID
 
+	if 'OWNER_USERNAME' in dir(settings):
+		owner = User.objects.get(username=settings.OWNER_USERNAME)
+	else:
+		owner = None
+
 	return {
 		'site': Site.objects.get_current(),
 		'default_collection_log_id': default_collection_log_id,
 		'now': datetime.now(),
 		'production': settings.PRODUCTION,
-		'author_name': settings.AUTHOR_NAME
+		'author_name': settings.AUTHOR_NAME,
+		'owner': owner
 	}
 
 # Copyright 2012 Trevor F. Smith (http://trevor.smith.name/) 
