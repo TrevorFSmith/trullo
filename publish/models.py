@@ -141,7 +141,7 @@ class Comment(models.Model):
 	author = models.CharField(max_length=512, blank=False, null=False)
 	email = models.EmailField(blank=True, null=True)
 	url = models.URLField(blank=True, null=True, max_length=1024)
-	ip = models.IPAddressField(blank=True, null=True)
+	ip = models.GenericIPAddressField(blank=True, null=True)
 	created = models.DateTimeField(auto_now_add=True)
 	comment = models.TextField(blank=False, null=False)
 	censored = models.BooleanField(blank=False, null=False, default=False)
