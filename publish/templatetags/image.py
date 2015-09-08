@@ -65,7 +65,6 @@ def fit_image(file, size_param="300x300"):
 	"""Fit an image into the dimensions with no change in height/width ratio"""
 	try:
 		if not file: return None
-		print 'file', file
 		width_param, height_param = size_param.split('x')
 		width = int(width_param)
 		height = int(height_param)
