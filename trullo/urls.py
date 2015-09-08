@@ -8,13 +8,13 @@ from django.views.generic import RedirectView
 admin.autodiscover()
 
 urlpatterns = patterns('',
-	(r'^favicon\.ico$', RedirectView.as_view(url='/static/favicon.gif')),
+	(r'^favicon\.ico$', RedirectView.as_view(url='/static/favicon.gif', permanent=True)),
     (r'^admin/doc/', include('django.contrib.admindocs.urls')),
     (r'^admin/', include(admin.site.urls)),
 
 	(r'^accounts/login/$', 'django.contrib.auth.views.login', {'template_name':'admin/login.html'}),
 	(r'^accounts/logout/$', 'django.contrib.auth.views.logout_then_login'),
-	(r'^accounts/profile/$', RedirectView.as_view(url='/')),
+	(r'^accounts/profile/$', RedirectView.as_view(url='/', permanent=True)),
 
 	(r'^publish/', include('publish.urls')),
 	(r'^', include('front.urls')),
