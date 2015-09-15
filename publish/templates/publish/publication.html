@@ -17,6 +17,10 @@
 			margin-top: 30px;
 		}
 
+		.publication-description br {
+			display: block;
+		}
+
 		.controls .btn {
 			margin-right: 20px;
 		}
@@ -48,7 +52,7 @@
 
 				{% if publication.description %}
 					<div class="publication-description">
-						{{ publication.description|safe }}
+						{{ publication.description|safe|linebreaks }}
 					</div>
 					<div class="controls trailer-buttons">
 						{% if publication.source_url %}
