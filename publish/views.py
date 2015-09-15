@@ -68,6 +68,14 @@ def publications(request):
 	}
 	return render_to_response('publish/publications.html', context, context_instance=RequestContext(request))
 
+def publication(request, slug):
+	publication = get_object_or_404(Publication, slug=slug)
+	context = {
+		'publication': publication,
+		'other_publications': Publication.objects.exclude(pk=publication.id)
+	}
+	return render_to_response('publish/publication.html', context, context_instance=RequestContext(request))
+
 def merge(request):
 	return render_to_response('publish/merge.html', { }, context_instance=RequestContext(request))
 

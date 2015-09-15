@@ -5,6 +5,7 @@ urlpatterns = patterns('',
 	(r'^idea/$', 'publish.views.ideas'),
 	(r'^post/$', 'publish.views.posts'),
 	(r'^publication/$', 'publish.views.publications'),
+	(r'^publication/(?P<slug>[^/]+)/$', 'publish.views.publication'),
 	(r'^project/$', 'publish.views.projects'),
 
 	(r'^merge/$', 'publish.views.merge'),

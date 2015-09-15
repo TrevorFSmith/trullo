@@ -3,7 +3,9 @@
 
 	{% if publication.image %}
 		<div class="publication-image">
-			{% if publication.source_url %}
+			{% if publication.slug %}
+				<a href="{{ publication.get_absolute_url }}">
+			{% elif publication.source_url %}
 				<a href="{{ publication.source_url }}">
 			{% elif publication.document %}
 				<a href="{{ publication.document.url }}">
@@ -11,18 +13,30 @@
 
 			<img src='{{ publication.image.url|fit_image:"200x200" }}' />
 
-			{% if publication.source_url or publication.document %}
+			{% if publication.slug or publication.source_url or publication.document %}
 				</a>
 			{% endif %}
 		</div>
 	{% endif %}
 	<h2>{{ publication.title }}</h2>
 	<div class="authors">{{ publication.authors }}</div>
-	<div class="venue-and-date">{{ publication.venue }}. {{ publication.publication_date.date }}</div>
+	<div class="venue-and-date">
+		{{ publication.venue }}.
+		{% if publication.publication_date %}
+			{{ publication.publication_date.date }}
+		{% else %}
+			Not yet released.
+		{% endif %}
+	</div>
 	<div class="links">
+		{% if publication.slug %}
+			<a class="slug-link" href="{{ publication.get_absolute_url }}">more information</a>
+		{% endif %}
+
 		{% if publication.source_url %}
 			<a href="{{ publication.source_url }}">source</a>
 		{% endif %}
+
 		{% if publication.document %}
 			<a href="{{ publication.document.url }}">download</a>
 		{% endif %}

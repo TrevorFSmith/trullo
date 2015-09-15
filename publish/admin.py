@@ -34,7 +34,7 @@ class PhotoAdmin(StyledAdmin):
 admin.site.register(Photo, PhotoAdmin)
 
 class PublicationAdmin(StyledAdmin):
-	list_display = ('title', 'venue', 'publication_date')
+	list_display = ('title', 'venue', 'publication_date', 'slug')
 admin.site.register(Publication, PublicationAdmin)
 
 class LogAdmin(StyledAdmin):

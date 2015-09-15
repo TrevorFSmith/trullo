@@ -79,6 +79,12 @@ class Publication(models.Model):
 	document = models.FileField(upload_to='publication', blank=True, null=True)
 	publication_date = models.DateTimeField(null=True, blank=True)
 	image = models.ImageField(upload_to='publication_image', blank=True)
+	slug = models.SlugField(blank=True, null=True)
+	description = models.TextField(blank=True)
+
+	@models.permalink
+	def get_absolute_url(self):
+		return ('publish.views.publication', (), { 'slug':self.slug })
 
 	def __unicode__(self): return self.title
 

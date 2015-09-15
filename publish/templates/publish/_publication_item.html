@@ -1,0 +1,34 @@
+{% load image %}
+<div class="publication-item">
+	{% if publication.image %}
+		<div class="publication-image">
+			{% if publication.slug %}
+				<a href="{{ publication.get_absolute_url }}">
+			{% else %}
+				<a href="{% url 'publish.views.publications' %}">
+			{% endif %}
+				<img src='{{ publication.image.url|fit_image:"100x100" }}' />
+			</a>
+		</div>
+	{% endif %}
+	<h3>
+		{% if publication.slug %}
+			<a href="{{ publication.get_absolute_url }}">
+		{% else %}
+			<a href="{% url 'publish.views.publications' %}">
+		{% endif %}
+			{{ publication.title }}
+		</a>
+		<div class="venue-and-date">
+			{{ publication.venue }}
+
+			<br>
+
+			{% if publication.publication_date %}
+				{{ publication.publication_date.date }}
+			{% else %}
+				Not yet released.
+			{% endif %}
+		</div>
+	</h3>
+</div>

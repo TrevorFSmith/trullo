@@ -1,0 +1,73 @@
+{% extends "publish/base.html" %}
+{% load image %}
+
+{% block title %}{{ publication.title }} | {% endblock %}
+
+{% block head-extras-page %}
+	<style>
+		#page-view .publication .slug-link {
+			display: none;
+		}
+
+		.controls {
+			margin: 20px 0 30px 0;
+		}
+
+		.publication-description {
+			margin-top: 30px;
+		}
+
+		.controls .btn {
+			margin-right: 20px;
+		}
+	</style>
+{% endblock %}
+
+{% block script-extras-page %}
+	<script>
+		$(document).ready(function(){
+			$('#publications-nav').addClass('active');
+		});
+	</script>
+{% endblock %}
+
+{% block page-view %}
+	<div id="top-page-view-container" class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-8">
+				<h1>
+					{{ publication.title }} by {{ publication.authors }}
+				</h1>
+				<div class="controls lead-buttons">
+					{% if publication.source_url %}
+						<a class="btn btn-primary" href="{{ publication.source_url }}">Get It Now</a>
+					{% endif %}
+				</div>
+				<img src='{{ publication.image.url|fit_image:"600x600" }}' />
+
+
+				{% if publication.description %}
+					<div class="publication-description">
+						{{ publication.description|safe }}
+					</div>
+					<div class="controls trailer-buttons">
+						{% if publication.source_url %}
+							<a class="btn btn-primary" href="{{ publication.source_url }}">Get It Now</a>
+						{% endif %}
+					</div>
+				{% endif %}
+			</div>
+
+			<div class="col-xs-12 col-sm-4">
+				<h2>Other publications</h2>
+				<ul class="publication-list">
+					{% for publication in other_publications %}
+						<li>
+							{% include "publish/_publication_item.html" %}
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+	</div>
+{% endblock %}
