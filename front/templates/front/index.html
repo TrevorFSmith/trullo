@@ -46,23 +46,27 @@
 {% endblock %}
 
 {% block page-view %}
-	<div id="top-page-view-container" class="container">
-		<div class="jumbotron">
-			<h1>
-				Hello{% if owner and owner.first_name %}, I'm {{ owner.first_name }}.{% endif %}
-			</h1>
-			<p class="lead">
-				<div class="row">
-					<div id="profile-image-col" class="col-xs-12 col-sm-3">
-						<img class="profile-image" src="{{ owner.profile.image.url }}" />
+	{% if owner and owner.profile.about %}
+		<div id="top-page-view-container" class="container">
+			<div class="jumbotron">
+				<h1>
+					Hello{% if owner and owner.first_name %}, I'm {{ owner.first_name }}.{% endif %}
+				</h1>
+				<p class="lead">
+					<div class="row">
+						{% if owner.profile.image %}
+								<div id="profile-image-col" class="col-xs-12 col-sm-3">
+								<img class="profile-image" src="{{ owner.profile.image.url }}" />
+							</div>
+						{% endif %}
+						<div class="col-xs-12 col-sm-9">
+							{{ owner.profile.about|safe }}
+						</div>
 					</div>
-					<div class="col-xs-12 col-sm-9">
-						{{ owner.profile.about|safe }}
-					</div>
-				</div>
-			</p>
+				</p>
+			</div>
 		</div>
-	</div>
+	{% endif %}
 
 	<div class="container">
 		<div class="row">
