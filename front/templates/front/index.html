@@ -46,8 +46,8 @@
 {% endblock %}
 
 {% block page-view %}
-	{% if owner and owner.profile.about %}
-		<div id="top-page-view-container" class="container">
+	<div id="top-page-view-container" class="container">
+		{% if owner and owner.profile.about %}
 			<div class="jumbotron">
 				<h1>
 					Hello{% if owner and owner.first_name %}, I'm {{ owner.first_name }}.{% endif %}
@@ -65,8 +65,8 @@
 					</div>
 				</p>
 			</div>
-		</div>
-	{% endif %}
+		{% endif %}
+	</div>
 
 	<div class="container">
 		<div class="row">
