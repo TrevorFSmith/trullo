@@ -13,5 +13,4 @@ def mdown(value):
 	extensions = ["nl2br", ]
 	return mark_safe(markdown.markdown(force_unicode(value),
 									extensions,
-									safe_mode=True,
 									enable_attributes=False))
