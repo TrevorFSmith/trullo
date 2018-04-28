@@ -3,6 +3,11 @@
   "name": "Trullo",
   "version": "1.0",
   "description": "Trullo, yo.",
+ "applications": {
+     "gecko": {
+          "id": "{daf4ccc7-a45e-4450-bbbc-91cf07434aaa}"
+     }
+  },
   "icons": {
     "48": "icons/icon-48.png"
   },
