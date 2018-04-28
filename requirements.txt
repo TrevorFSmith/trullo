@@ -1,7 +1,7 @@
 Django==1.8.2
-Markdown==2.6.2
-Pillow==2.8.2
-psycopg2==2.6.1
-pytz==2015.4
-gunicorn==19.3.0
-boto==2.38.0
+boto==2.48.0
+gunicorn==19.7.1
+Markdown==2.6.11
+Pillow==5.1.0
+psycopg2==2.7.1
+pytz==2018.4

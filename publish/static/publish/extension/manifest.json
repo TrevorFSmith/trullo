@@ -1,0 +1,17 @@
+{
+  "manifest_version": 2,
+  "name": "Trullo",
+  "version": "1.0",
+  "description": "Trullo, yo.",
+  "icons": {
+    "48": "icons/icon-48.png"
+  },
+  "permissions": [
+    "tabs"
+  ],
+  "browser_action": {
+    "default_icon": "icons/icon-48.png",
+    "default_title": "Trullo",
+    "default_popup": "popup.html"
+  }
+}

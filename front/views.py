@@ -20,7 +20,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import HttpResponse, Http404, HttpResponseServerError, HttpResponseRedirect, HttpResponsePermanentRedirect
 
-from publish.models import Project, LogEntry, Link
+from publish.models import Project, LogEntry, Link, Job
 from publish.forms import LinkForm
 
 def index(request):
@@ -37,7 +37,9 @@ def contact(request):
 	return render_to_response('front/contact.html', context, context_instance=RequestContext(request))
 
 def jobs(request):
-	context = {}
+	context = {
+		'jobs': Job.objects.filter(public=True)
+	}
 	if hasattr(settings, 'JOBS_PAGE_CONTACT_INFO'):
 		context['contactInfo'] = settings.JOBS_PAGE_CONTACT_INFO
 	return render_to_response('front/jobs.html', context, context_instance=RequestContext(request))

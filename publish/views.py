@@ -20,6 +20,7 @@ from django.utils.encoding import smart_str
 from django.core.urlresolvers import reverse
 from django.contrib.sites.models import Site
 from django.template.loader import render_to_string
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 import django.contrib.contenttypes.models as content_type_models
 from django.shortcuts import render_to_response, get_object_or_404
@@ -36,6 +37,7 @@ def index(request):
 def collect(request):
 	return render_to_response('publish/collect.html', { }, context_instance=RequestContext(request))
 
+@csrf_exempt
 @login_required
 def collect_form(request):
 	page_message = None

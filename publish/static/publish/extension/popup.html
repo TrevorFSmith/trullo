@@ -1,0 +1,31 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="popup.css"/>
+</head>
+<body>
+	<h1>Trullo</h1>
+
+	<form class="collect-form" action="https://trevor.smith.name/publish/collect-form/?log=6" method="POST">
+		<select id="id_log" name="log">
+			<option value="6" selected="selected">Collected</option>
+			<option value="4">Readings</option>
+			<option value="2">Exterior</option>
+			<option value="8">Reading List</option>
+			<option value="9">Exformation</option>
+			<option value="7">Tweets</option>
+			<option value="10">Memex Build Log</option>
+			<option value="11">Test</option>
+		</select>
+		<input id="id_url" name="url" type="url" placeholder="URL">
+		<input id="id_title" name="title" type="text" placeholder="Title">
+		<textarea cols="40" id="id_excerpt" name="excerpt" rows="10" placeholder="Excerpt"></textarea>
+		<input id="id_note" name="note" type="text" placeholder="Note">
+		<label>public</label>
+		<input checked="checked" id="id_make_public" name="make_public" type="checkbox">
+		<input value="Collect" type="submit">
+	</form>
+
+	<script src="popup.js"></script>
+</body>
+</html>
